@@ -7,7 +7,8 @@ def read_file(file)
   data
 end
 
-def whitespace_split(data, all_words)
+def whitespace_split(data)
+  all_words = []
   data.each_value do |v|
     v.each do |phrase|
       individual_words = phrase.split(" ")
@@ -15,9 +16,11 @@ def whitespace_split(data, all_words)
     end
   end
   all_words.uniq!
+  all_words
 end
 
-def build_output(all_words, output, data)
+def build_output(all_words, data)
+  output = {}
   all_words.each do |word|
     count = 0
     name_arr = []
@@ -33,16 +36,12 @@ def build_output(all_words, output, data)
     end
     output[word] = { :count => count, :people => name_arr}
   end
+  output
 end
 
 def word_cloud(data)
-  output = {}
-  all_words = []
-  # go over each person, pull out each phrase & split by whitespace
-  whitespace_split(data, all_words)
-  # take each word, find out if a person said them and how many times.
-  build_output(all_words, output, data)
-  output
+  all_words = whitespace_split(data)
+  build_output(all_words, data)
 end
 
 file = read_file("data/quotes.json")
